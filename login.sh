@@ -16,10 +16,10 @@ if [ "$WSK_APIHOST" == "null" ]; then
     export WSK_APIHOST=https://openwhisk.ng.bluemix.net
 fi
 
-echo "API=$API"
-echo "USER=$USER"
-echo "ORG=$ORG"
-echo "SPACE=$SPACE"
+#echo "API=$API"
+#echo "USER=$USER"
+#echo "ORG=$ORG"
+#echo "SPACE=$SPACE"
 
 cf login -a $API -u "$USER" -p "$PASSWORD" -o "$ORG" -s "$SPACE"
 
