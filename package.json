@@ -1,0 +1,30 @@
+{
+  "name": "openwhisk-bluemix-login",
+  "version": "1.0.1",
+  "description": "Logs on to Bluemix, and acquires an OpenWhisk auth key",
+  "bin": {
+    "wsklogin": "bin/wsklogin"
+  },
+  "scripts": {
+    "postinstall": "./init.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Mitchell",
+  "license": "Apache-2.0",
+  "keywords": [
+    "serverless",
+    "openwhisk",
+    "tools",
+    "tool",
+    "bluemix",
+    "login"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/starpit/openwhisk-bluemix-login"
+  },
+  "bugs": {
+    "url": "https://github.com/starpit/openwhisk-bluemix-login/issues"
+  },
+  "dependencies": {}
+}
