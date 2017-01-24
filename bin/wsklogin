@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# -*- mode: Bash
+
+while getopts ":u:p:s:o" opt; do
+  case $opt in
+    u)
+      BLUEMIX_USER="$OPTARG"
+      ;;
+    p)
+      BLUEMIX_PASSWORD="$OPTARG"
+      ;;
+    o)
+      BLUEMIX_ORG="$OPTARG"
+      ;;
+    s)
+      BLUEMIX_SPACE="$OPTARG"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
+
+if [ -z "$BLUEMIX_USER" ]; then
+    echo -n "User: "
+    read BLUEMIX_USER
+fi
+
+if [ -z "$BLUEMIX_PASSWORD" ]; then
+   echo -n "Password: "
+   read -s BLUEMIX_PASSWORD
+   echo
+fi
+
+if [ -z "$BLUEMIX_ORG" ]; then
+    echo -n "Org: "
+    read BLUEMIX_ORG
+fi
+
+if [ -z "$BLUEMIX_SPACE" ]; then
+    echo -n "Space: "
+    read BLUEMIX_SPACE
+fi
+
+wsk property set --auth `wsk action invoke bluemix/login -br \
+    -p user "$BLUEMIX_USER" \
+    -p password "$BLUEMIX_PASSWORD" \
+    -p org "$BLUEMIX_ORG" \
+    -p space "$BLUEMIX_SPACE" | jq --raw-output .auth`

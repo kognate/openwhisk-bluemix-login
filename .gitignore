@@ -1,0 +1,11 @@
+config/oauth/providers.json
+config/oauth/providers-client.json
+*~
+\#*#
+*.bak
+node_modules
+endpoints*.sh
+*.log
+*.out
+*.err
+action.zip
