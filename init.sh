@@ -20,3 +20,5 @@ docker build -t "${IMAGE}" . \
 	   --docker bluemix/login \
 	   "${IMAGE}" \
 	   -a web-export true
+
+wsk api-experimental create /bluemix /login post bluemix/login 2>&1 | grep -v "already exists"
