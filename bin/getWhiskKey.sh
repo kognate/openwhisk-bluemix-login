@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
 
-ACCESS_TOKEN=`cat ~/.cf/config.json | jq --raw-output .AccessToken | awk '{print $2}'`
-REFRESH_TOKEN=`cat ~/.cf/config.json | jq --raw-output .RefreshToken`
+JSON_PAYLOAD=$(cat ~/.cf/config.json |jq -rcM '{ "accessToken": (.AccessToken | split(" ")[1]), "refreshToken" : .RefreshToken}')
+WSK_NAMESPACE=$(cat ~/.cf/config.json |jq -rcM '[.OrganizationFields.Name, .SpaceFields.Name] | join("_")')
 
-WSK_CREDENTIALS=`curl -s -X POST -H 'Content-Type: application/json' -d "{\"accessToken\": \"${ACCESS_TOKEN}\", \"refreshToken\": \"${REFRESH_TOKEN}\"}" ${WSK_APIHOST-https://openwhisk.ng.bluemix.net}/bluemix/v1/authenticate`
+curl -s -X POST -H 'Content-Type: application/json' \
+     -d ${JSON_PAYLOAD} ${WSK_APIHOST-https://openwhisk.ng.bluemix.net}/bluemix/v1/authenticate \
+     | jq -rcM ".namespaces[] | select(.name | contains(\"${WSK_NAMESPACE}\")) | [.uuid, .key] | join(\":\")"
 
-CF_ORG=`cat ~/.cf/config.json | jq --raw-output .OrganizationFields.Name`
-CF_SPACE=`cat ~/.cf/config.json | jq --raw-output .SpaceFields.Name`
-
-WSK_NAMESPACE="${CF_ORG}_${CF_SPACE}"
-
-S=`echo "${WSK_CREDENTIALS}" | jq ".namespaces[] | select(.name | contains(\"${WSK_NAMESPACE}\"))"`
-
-UUID=`echo $S | jq --raw-output .uuid`
-KEY=`echo $S | jq --raw-output .key`
-
-echo "${UUID}:${KEY}"
