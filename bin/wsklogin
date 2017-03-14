@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- mode: Bash
 
-while getopts ":u:p:s:o" opt; do
+while getopts "u:p:s:o:" opt; do
   case $opt in
     u)
       BLUEMIX_USER="$OPTARG"
